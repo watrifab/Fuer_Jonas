@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0d9agxt" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.3.4">
+  <bpmn:process id="Matura" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_0zik1fl</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0zik1fl" sourceRef="StartEvent_1" targetRef="Task_15293s8" />
+    <bpmn:sequenceFlow id="SequenceFlow_1brx8lp" sourceRef="Task_15293s8" targetRef="Task_0pjurrh" />
+    <bpmn:sequenceFlow id="SequenceFlow_0i4e4m9" sourceRef="Task_0pjurrh" targetRef="Task_096wj4n" />
+    <bpmn:sequenceFlow id="SequenceFlow_0ypiio3" sourceRef="Task_096wj4n" targetRef="Task_1nunyxm" />
+    <bpmn:endEvent id="EndEvent_0igg8qe">
+      <bpmn:incoming>SequenceFlow_0ylordn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_02i2zrj" sourceRef="Task_1nunyxm" targetRef="Task_1l9jd8v" />
+    <bpmn:userTask id="Task_15293s8" name="Studiegang wählen" camunda:assignee="a">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Studiengang" label="Studiengang" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0zik1fl</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1brx8lp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_0pjurrh" name="Stammdaten eingeben" camunda:formKey="embedded:app:NameForm.html" camunda:assignee="a">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Vorname" label="Vorname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+              <camunda:constraint name="validator" config="${stupidValidator}" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="Nachname" label="Nachname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1brx8lp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0i4e4m9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0ylordn" sourceRef="Task_1l9jd8v" targetRef="EndEvent_0igg8qe" />
+    <bpmn:manualTask id="Task_1nunyxm" name="Maturazeugnis hochladen">
+      <bpmn:incoming>SequenceFlow_0ypiio3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_02i2zrj</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Task_1l9jd8v" name="Angaben bestätigen" camunda:assignee="a">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Vorname" label="Vorname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="Nachname" label="Nachname" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="Studiengang" label="Studiengang" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="Student_NR" label="Matrikelnummer" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_02i2zrj</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ylordn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_096wj4n" name="Matr-Nr. erzeugen &#38; zuweisen" camunda:delegateExpression="${numbergenerator}">
+      <bpmn:incoming>SequenceFlow_0i4e4m9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ypiio3</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Matura">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0zik1fl_di" bpmnElement="SequenceFlow_0zik1fl">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1brx8lp_di" bpmnElement="SequenceFlow_1brx8lp">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0i4e4m9_di" bpmnElement="SequenceFlow_0i4e4m9">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ypiio3_di" bpmnElement="SequenceFlow_0ypiio3">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="750" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0igg8qe_di" bpmnElement="EndEvent_0igg8qe">
+        <dc:Bounds x="1092" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_02i2zrj_di" bpmnElement="SequenceFlow_02i2zrj">
+        <di:waypoint x="850" y="117" />
+        <di:waypoint x="920" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1w4g6r6_di" bpmnElement="Task_15293s8">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1tuqt7o_di" bpmnElement="Task_0pjurrh">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ylordn_di" bpmnElement="SequenceFlow_0ylordn">
+        <di:waypoint x="1020" y="117" />
+        <di:waypoint x="1092" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ManualTask_0cnzos7_di" bpmnElement="Task_1nunyxm">
+        <dc:Bounds x="750" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1bx84o7_di" bpmnElement="Task_1l9jd8v">
+        <dc:Bounds x="920" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1po78ad_di" bpmnElement="Task_096wj4n">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
